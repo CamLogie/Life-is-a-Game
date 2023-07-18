@@ -1,5 +1,6 @@
 .venv3104/
 
-instance/
-
+*.pyc
 __pycache__/
+
+instance/
