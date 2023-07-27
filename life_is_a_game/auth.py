@@ -6,7 +6,8 @@ from flask import (
 
 from werkzeug.security import check_password_hash, generate_password_hash
 
-from life_is_a_game.db import get_db
+from life_is_a_game.db import get_db, results_to_dict
+
 
 bp = Blueprint('auth', __name__, url_prefix='/auth')
 
@@ -32,10 +33,11 @@ def register():
 
         if error is None:
             try:
-                cur.execute('INSERT INTO users (username, password, first_name, last_name) VALUES (?, ?, ?, ?)',
-                (username, generate_password_hash(password), first_name, last_name),
+                cur.execute('INSERT INTO users (username, password, first_name, last_name) VALUES %s',
+                [(username, generate_password_hash(password), first_name, last_name)],
                 )
-                cur.commit()
+                db.commit()
+                cur.connection.close()
             except db.IntegrityError:
                 error = f"User {username} is already registered."
             else:
@@ -50,20 +52,23 @@ def login():
     if request.method == 'POST':
         username = request.form['username']
         password = request.form['password']
-        db = get_db()
-        cur = db.cursor()
         error = None
-        user = cur.execute('SELECT * FROM users WHERE username = ?', (username,)).fetchone()
+        cur = get_db().cursor()
+        cur.execute("SELECT * FROM users WHERE username = %s", (username,))
+
+        user = results_to_dict(cur)
+
+        cur.connection.close()
 
         if user is None:
             error = 'Incorrect username'
-        elif not check_password_hash(user['password'], password):
+        elif not check_password_hash(user.password, password):
             error = 'Incorrect password'
 
         if error is None:
             session.clear()
-            session['user_id'] = user['id']
-            return redirect(url_for('index'))
+            session['user_id'] = user.id
+            return redirect(url_for('hello'))
         
         flash(error)
     
@@ -78,12 +83,15 @@ def load_logged_in_user():
     if user_id is None:
         g.user = None
     else:
-        g.user = cur.execute('SELECT * FROM users WHERE id = ?', (user_id,)).fetchone()
+        cur.execute('SELECT * FROM users WHERE id = %s', (user_id,))
+        g.user = results_to_dict(cur)
+    
+    cur.connection.close()
     
 @bp.route('/logout')
 def logout():
     session.clear()
-    return redirect(url_for('index'))
+    return redirect(url_for('auth.login'))
 
 def login_required(view):
     @functools.wraps(view)
