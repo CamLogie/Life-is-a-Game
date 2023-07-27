@@ -18,6 +18,17 @@ def close_db():
 
     conn.close()
 
+def results_to_dict(cur):
+    dict = {}
+    results = cur.fetchone()
+
+    i = 0
+    for x in cur.description:
+        dict[x[0]] = results[i]
+        i += 1
+
+    return dict
+
 def init_db():
     conn = get_db()
     cur = conn.cursor()
@@ -25,11 +36,12 @@ def init_db():
     cur.execute('DROP TABLE IF EXISTS transactions')
     cur.execute('DROP TABLE IF EXISTS balances')
     cur.execute('DROP TABLE IF EXISTS users')
+    cur.execute('DROP TYPE IF EXISTS point_type')
     cur.execute('CREATE TABLE users (id serial PRIMARY KEY UNIQUE,'
-                                    'first_name varchar (30) NOT NULL,'
-                                    'last_name varchar (30) NOT NULL,'
-                                    'username varchar (30) NOT NULL UNIQUE,'
-                                    'password varchar (50) NOT NULL);'
+                                    'first_name TEXT NOT NULL,'
+                                    'last_name TEXT NOT NULL,'
+                                    'username TEXT NOT NULL UNIQUE,'
+                                    'password TEXT NOT NULL);'
                                     )
     cur.execute('CREATE TYPE point_type AS ENUM (\'life\', \'health\', \'money\')')
     cur.execute('CREATE TABLE transactions (id serial PRIMARY KEY UNIQUE,'
@@ -38,7 +50,7 @@ def init_db():
                 'val integer);'
                 )
     cur.execute('CREATE TABLE balances (id serial PRIMARY KEY,'
-                'username varchar (30),'
+                'username TEXT,'
                 'health_points_balance integer,'
                 'life_points_balance integer,'
                 'money_points_balance integer,'
