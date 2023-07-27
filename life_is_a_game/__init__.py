@@ -1,7 +1,7 @@
 import os
 import psycopg2
 
-from flask import Flask
+from flask import Flask, g
 
 def create_app(test_config=None):
     app = Flask(__name__, instance_relative_config=True)
@@ -21,7 +21,7 @@ def create_app(test_config=None):
     
     @app.route("/hello")
     def hello():
-        return 'Hello, World!'
+        return f'Hello, {g.user["username"]}!'
 
     from . import db
     db.init_app(app)
