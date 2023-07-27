@@ -6,7 +6,7 @@ from flask import (
 
 from werkzeug.security import check_password_hash, generate_password_hash
 
-from life_is_a_game.db import get_db, results_to_dict
+from life_is_a_game.db import get_db, close_db, results_to_dict
 
 
 bp = Blueprint('auth', __name__, url_prefix='/auth')
@@ -37,13 +37,14 @@ def register():
                 [(username, generate_password_hash(password), first_name, last_name)],
                 )
                 db.commit()
-                cur.connection.close()
             except db.IntegrityError:
                 error = f"User {username} is already registered."
             else:
                 return redirect(url_for("auth.login"))
         
         flash(error)
+
+        close_db(db, curr)
 
     return render_template('auth/register.html')
 
@@ -53,21 +54,22 @@ def login():
         username = request.form['username']
         password = request.form['password']
         error = None
-        cur = get_db().cursor()
+        db = get_db()
+        cur = db.cursor()
         cur.execute("SELECT * FROM users WHERE username = %s", (username,))
 
         user = results_to_dict(cur)
 
-        cur.connection.close()
+        close_db(db, cur)
 
         if user is None:
             error = 'Incorrect username'
-        elif not check_password_hash(user.password, password):
+        elif not check_password_hash(user['password'], password):
             error = 'Incorrect password'
 
         if error is None:
             session.clear()
-            session['user_id'] = user.id
+            session['user_id'] = user['id']
             return redirect(url_for('hello'))
         
         flash(error)
@@ -86,7 +88,7 @@ def load_logged_in_user():
         cur.execute('SELECT * FROM users WHERE id = %s', (user_id,))
         g.user = results_to_dict(cur)
     
-    cur.connection.close()
+    close_db(db, cur)
     
 @bp.route('/logout')
 def logout():

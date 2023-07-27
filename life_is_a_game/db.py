@@ -13,10 +13,9 @@ def get_db():
     )
     return conn
 
-def close_db():
-    conn = get_db()
-
+def close_db(conn, cur):
     conn.close()
+    cur.close()
 
 def results_to_dict(cur):
     dict = {}
@@ -60,7 +59,7 @@ def init_db():
                 )
 
     conn.commit()
-    cur.close()
+    close_db(conn, cur)
 
 @click.command('init-db')
 def init_db_command():
@@ -70,4 +69,3 @@ def init_db_command():
 
 def init_app(app):
     app.cli.add_command(init_db_command)
-    close_db()
