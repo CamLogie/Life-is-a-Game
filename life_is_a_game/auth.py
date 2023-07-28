@@ -7,6 +7,7 @@ from flask import (
 from werkzeug.security import check_password_hash, generate_password_hash
 
 from life_is_a_game.db import get_db, close_db, results_to_dict
+from life_is_a_game.profile import load_user_wallet
 
 
 bp = Blueprint('auth', __name__, url_prefix='/auth')
@@ -94,6 +95,7 @@ def load_logged_in_user():
     else:
         cur.execute('''SELECT * FROM users WHERE id = %s''', (user_id,))
         g.user = results_to_dict(cur)
+        g.user_wallet = load_user_wallet(cur, user_id)
     
     close_db(db, cur)
     
