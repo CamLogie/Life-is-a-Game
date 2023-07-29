@@ -15,7 +15,7 @@ def wallet():
     return render_template('profile/wallet.html')
 
 
-@bp.route('/point/<additive_operator>/<point_type>/<int:value>')
+@bp.route('/point/<additive_operator>/<point_type>/<int:value>', methods=(['POST']))
 def add_point(additive_operator, point_type, value):
     """add points to transaction list and update wallet"""
 
