@@ -9,7 +9,6 @@ Running App:
 4. Export the following variables to your shell:
     - `DATABASE_USER=<database_username>`
     - `DATABASE_PASSWORD=<password_for_username>`
-    - `SEED_USER_PASSWORD=<password_for_seed_user>`
 5. After all installations, run `flask --app life_is_a_game` init-db to initialize your database
 
 Database Notes:
