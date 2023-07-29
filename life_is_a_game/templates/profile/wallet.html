@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+
+{% block header %}
+  <h1>{% block title %}Your Wallet{% endblock %}</h1>
+{% endblock %}
+
+{% block content %}
+  <h2>Health Points: {{g.user_wallet['health_points_balance']}}</h2><br>
+  <h2>Life Points: {{g.user_wallet['life_points_balance']}}</h2><br>
+  <h2>Money Points: {{g.user_wallet['money_points_balance']}}</h2><br>
+
+{% endblock %}
