@@ -9,4 +9,14 @@
   <h2>Life Points: {{g.user_wallet['life_points_balance']}}</h2><br>
   <h2>Money Points: {{g.user_wallet['money_points_balance']}}</h2><br>
 
+  <form action="/point/add/health/1" method="POST">
+    <button type="submit">Workout</button>
+  </form>
+  <form action="/point/add/life/1" method="POST">
+    <button type="submit">Went to Concert</button>
+  </form>
+  <form action="/point/add/money/1" method="POST">
+    <button type="submit">Paycheck Arrived</button>
+  </form>
+
 {% endblock %}
