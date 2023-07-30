@@ -145,11 +145,3 @@ def load_user_wallet(cur, user_id):
     wallet_data = results_to_dict(cur)
 
     return wallet_data
-
-
-    
-    
-
-
-
-

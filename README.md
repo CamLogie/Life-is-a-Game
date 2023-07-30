@@ -3,13 +3,18 @@ Building an application to help gamify some aspects of life. Planning on having 
 
 
 Running App:
-1. Ensure your OS is using Python 3.10.4
-2. Create a new virtual environment in the top level of this directory
-3. Activate the virtual environment and install the requirements.txt files
-4. Export the following variables to your shell:
-    - `DATABASE_USER=<database_username>`
-    - `DATABASE_PASSWORD=<password_for_username>`
-5. After all installations, run `flask --app life_is_a_game` init-db to initialize your database
+1. Ensure your OS is using Python 3.10.X
+2. Follow the table below for installing dependencies: 
+3. Export the following variables to your shell:
+    - `$ DATABASE_USER=<database_username>`
+    - `$ DATABASE_PASSWORD=<password_for_username>`
+4. After all installations, run `flask --app life_is_a_game` init-db to initialize your database
+
+| [pipenv](https://pipenv.pypa.io/en/latest/)| virtualenv or venv |
+| ------- | ------- |
+| 1. Run `$ pipenv shell ` | 1. Create a virtual environment |
+| 2. Run `$ pipenv sync` | 2. Activate the virtual environment | 
+| | 3. Run ` $ pip install -r requirements.txt` |
 
 Database Notes:
 This program relies on postgres and pyscopg2 as its database and database adapter.
@@ -21,3 +26,5 @@ This program relies on postgres and pyscopg2 as its database and database adapte
 Scripts:
 
 I have included some simple shell scripts that can be run to test the app, run it in debug mode, and run it normally. They are under life_is_a_game/scripts/
+
+q: what is the markdown for a hyperlink?
