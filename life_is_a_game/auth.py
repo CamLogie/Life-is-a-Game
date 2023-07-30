@@ -77,7 +77,7 @@ def login():
         if error is None:
             session.clear()
             session['user_id'] = user['id']
-            return redirect(url_for('hello'))
+            return redirect(url_for('profile.wallet'))
         
         flash(error)
     
@@ -121,3 +121,6 @@ def create_wallet(cur, conn, user_data):
         ;''', (user_data['id'], user_data['username'])
     )
     conn.commit()
+
+
+
