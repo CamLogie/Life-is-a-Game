@@ -26,5 +26,3 @@ This program relies on postgres and pyscopg2 as its database and database adapte
 Scripts:
 
 I have included some simple shell scripts that can be run to test the app, run it in debug mode, and run it normally. They are under life_is_a_game/scripts/
-
-q: what is the markdown for a hyperlink?
