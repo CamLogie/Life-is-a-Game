@@ -1,5 +1,5 @@
 import unittest
-from points.health_point import HealthPoint
+from life_is_a_game.points.health_point import HealthPoint
 
 class HealthPointTest(unittest.TestCase):
 
@@ -7,11 +7,11 @@ class HealthPointTest(unittest.TestCase):
         self.point = HealthPoint(1)
 
     def test_return_val(self):
-        self.assertEqual(self.point.return_val(), 1)
+        self.assertEqual(self.point.val, 1)
     
     @unittest.expectedFailure
     def test_return_wrong_val(self):
-        self.assertEqual(self.point.return_val(), 3)
+        self.assertEqual(self.point.val, 3)
 
 if __name__ == '__main__':
     unittest.main()

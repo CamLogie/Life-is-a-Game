@@ -15,9 +15,9 @@ psycopg2-binary = "==2.9.6"
 werkzeug = "==2.3.6"
 zipp = "==3.16.2"
 bootstrap-flask = "*"
+coverage = "*"
 
 [dev-packages]
 
 [requires]
 python_version = "3.10"
- 
