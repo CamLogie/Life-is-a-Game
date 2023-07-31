@@ -1,5 +1,5 @@
 import unittest
-from points.money_point import MoneyPoint
+from life_is_a_game.points.money_point import MoneyPoint
 
 class MoneyPointTest(unittest.TestCase):
 
@@ -7,11 +7,11 @@ class MoneyPointTest(unittest.TestCase):
         self.point = MoneyPoint(1)
 
     def test_return_val(self):
-        self.assertEqual(self.point.return_val(), 1)
+        self.assertEqual(self.point.val, 1)
     
     @unittest.expectedFailure
     def test_return_wrong_val(self):
-        self.assertEqual(self.point.return_val(), 3)
+        self.assertEqual(self.point.val, 3)
 
 if __name__ == '__main__':
     unittest.main()

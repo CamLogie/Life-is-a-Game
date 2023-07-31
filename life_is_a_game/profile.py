@@ -24,13 +24,13 @@ def add_point(additive_operator, point_type, value):
 
     match point_type:
         case PointType.HEALTH.value:
-            point = HealthPoint(value, PointType.HEALTH.value)
+            point = HealthPoint(value)
             wallet_update_sql = '''UPDATE wallet SET health_points_balance = %s WHERE user_id = %s'''
         case PointType.LIFE.value:
-            point = LifePoint(value, PointType.LIFE.value)
+            point = LifePoint(value)
             wallet_update_sql = '''UPDATE wallet SET life_points_balance = %s WHERE user_id = %s'''
         case PointType.MONEY.value:
-            point = MoneyPoint(value, PointType.MONEY.value)
+            point = MoneyPoint(value)
             wallet_update_sql = '''UPDATE wallet SET money_points_balance = %s WHERE user_id = %s'''
 
     db = get_db()

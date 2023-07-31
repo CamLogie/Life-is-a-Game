@@ -3,4 +3,7 @@
 *.pyc
 __pycache__/
 
+.coverage
+htmlcov/
+
 instance/
