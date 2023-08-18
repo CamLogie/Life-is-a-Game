@@ -7,6 +7,7 @@ from life_is_a_game.points.health_point import HealthPoint
 from life_is_a_game.points.life_point import LifePoint
 from life_is_a_game.points.money_point import MoneyPoint
 from life_is_a_game.points.point_type import PointType
+from life_is_a_game.helpers.sql_query_factory import SqlQueryFactory
 
 bp = Blueprint('profile', __name__)
 
@@ -21,21 +22,25 @@ def add_point(additive_operator, point_type, value):
 
     if additive_operator == 'subtract':
         value = value * -1 
+    
+    sql_query_factory = SqlQueryFactory()
+
+    user_id = g.user['id']
 
     match point_type:
         case PointType.HEALTH.value:
             point = HealthPoint(value)
-            wallet_update_sql = '''UPDATE wallet SET health_points_balance = %s WHERE user_id = %s'''
+            balance = 'health_points_balance = '
         case PointType.LIFE.value:
             point = LifePoint(value)
-            wallet_update_sql = '''UPDATE wallet SET life_points_balance = %s WHERE user_id = %s'''
+            balance = 'life_points_balance = '
         case PointType.MONEY.value:
             point = MoneyPoint(value)
-            wallet_update_sql = '''UPDATE wallet SET money_points_balance = %s WHERE user_id = %s'''
+            balance = 'money_points_balance = '
 
     db = get_db()
     cur = db.cursor()
-    user_id = g.user['id']
+    
 
     cur.execute('''
         INSERT INTO transactions (user_id, point_type, val) 
@@ -45,10 +50,12 @@ def add_point(additive_operator, point_type, value):
         SELECT SUM(val) FROM transactions 
         WHERE point_type = %s AND user_id = %s''', (point.point_type, user_id,)
     )
-    point_sum = cur.fetchone()[0]
+
+    balance = balance + str(cur.fetchone()[0])
+
 
     cur.execute(
-        wallet_update_sql, ((point_sum, user_id,))
+        sql_query_factory.update_where('wallet', balance, 'user_id = {}'.format(user_id))
     )
 
     db.commit()
