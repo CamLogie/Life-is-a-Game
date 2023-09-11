@@ -13,7 +13,7 @@ Running App:
 | [pipenv](https://pipenv.pypa.io/en/latest/)| virtualenv or venv |
 | ------- | ------- |
 | 1. Run `$ pipenv shell ` | 1. Create a virtual environment |
-| 2. Run `$ pipenv sync` | 2. Activate the virtual environment | 
+| 2. Run `$ pipenv install -r requirements.txt` | 2. Activate the virtual environment | 
 | | 3. Run ` $ pip install -r requirements.txt` |
 
 Database Notes:
